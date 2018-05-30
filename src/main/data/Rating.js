@@ -1,16 +1,15 @@
 const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
-    _id: {
-        type: String
-    },
     userId: {
         type: String, 
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
     scheduleId: {
         type: String,
-        ref: 'Schedule'
+        ref: 'Schedule',
+        required: true
     },
     noiseRating: {
         type: Number,

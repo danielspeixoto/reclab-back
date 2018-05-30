@@ -1,37 +1,29 @@
 const express = require('express')
 const router = express.Router()
 const bodyParser = require("body-parser")
+const mongoose = require('mongoose')
 
 const scheduling = require('./domain/scheduling.js')
-const Rating = require('data/Rating.js')
-const User = require('data/User.js')
+const Rating = require('./data/Rating.js')
+const User = require('./data/User.js')
 
 module.exports.start = (db, port) => {
-    mongoose.connect({
-        database: db.path,
-        secret: db.secret
+    mongoose.connect(db.path).then(connection => {
+        console.log("Connected to database")
+    }).catch(err => {
+        console.log(err)
     })
-    
-    // On Connection
-    mongoose.connection.on("connected", () => {
-        console.log("Connected to database " + config.database)
-    })
-    
-    // On Error
-    mongoose.connection.on("error", (err) => {
-        console.log("Database error: " + err)
-    })
-    
-    const app = express()
 
+    const app = express()
     
     // Body Parser Middleware
     app.use(bodyParser.json())
     
     // Routes
     app.get("/scheduling", (req, res) => {
-        scheduling.getSchedules(req.body._id, (schedules, err) => {
+        scheduling.getSchedules(req.body.userId, (err, schedules) => {
             if(err) {
+                console.log('Error at scheduling')
                 console.log(err)
                 res.sendStatus(500)
             } else {
@@ -54,7 +46,26 @@ module.exports.start = (db, port) => {
     })
     
     app.post("/user", (req, res) => {
-        //TODO
+        let user = new User({
+            deviceId: req.body.deviceId
+        })
+        user.save(err => {
+            if(err){
+                console.log(err)
+                res.sendStatus(501)
+            } else {
+                User.findOne({deviceId: req.body.deviceId},
+                    (err, user) => {
+                    if(err){
+                        console.log(err)
+                        res.sendStatus(501)
+                    } else {
+                        res.json(user)
+                        res.status(200)
+                    }
+                }) 
+            }
+        })
     })
     
     // Start Server

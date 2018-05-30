@@ -4,25 +4,23 @@ const Rating = require('../data/Rating.js')
 const Recommendation = require('./recommendation.js')
 
 module.exports.getSchedules = function(userId, callback) {
-    Schedule.find({}, (schedules, err) => {
+    Schedule.find({}, (err ,schedules) => {
         if(err) {
-            callback(null, err)  
+            console.log("[Error]:domain/scheduling:Find Schedules")
+            callback(err ,null)  
         } else {
-            User.findById(userId, (user, err) => {
+            Rating.find({
+                userId
+            }, (err ,ratings) => {
                 if(err) {
-                    callback(schedules, err)
+                    console.log("[Error]:domain/scheduling:Find Ratings by user")
+                    callback(err ,schedules)
                 } else {
-                    Rating.find({
-                        userId
-                    }, (ratings, err) => {
-                        if(err) {
-                            callback(schedules, err)
-                        } else {
-                            schedules = Recommendation.recommend(user,
-                                 ratings, schedules)
-                            callback(schedules, null)
-                        }
-                    })
+                    schedules = Recommendation.recommend(
+                            ratings,
+                            schedules
+                        )
+                    callback(null, schedules)
                 }
             })
         }

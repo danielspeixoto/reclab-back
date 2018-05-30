@@ -1,17 +1,17 @@
 const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
-    _id: {
-        type: String
-    },
     scheduleStart: {
-        type: Number
+        type: Number,
+        required: true
     },
     scheduleEnd: {
-        type: Number
+        type: Number,
+        required: true
     },
     overallRating: {
-        type: Number
+        type: Number,
+        default: 3
     }
 })
 

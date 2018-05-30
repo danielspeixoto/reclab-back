@@ -17,9 +17,9 @@ module.exports.getSchedules = function(userId, callback) {
                     callback(err ,schedules)
                 } else {
                     schedules = Recommendation.recommend(
-                            ratings,
-                            schedules
-                        )
+                        ratings,
+                        schedules
+                    )
                     callback(null, schedules)
                 }
             })

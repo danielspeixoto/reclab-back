@@ -7,9 +7,13 @@ const scheduling = require('./domain/scheduling.js')
 const Rating = require('./data/Rating.js')
 const User = require('./data/User.js')
 
-module.exports.start = (db, port) => {
+module.exports.start = (db, port, done) => {
+    
     mongoose.connect(db.path).then(connection => {
         console.log("Connected to database")
+        if(done != null) {
+            done()
+        }
     }).catch(err => {
         console.log(err)
     })
@@ -46,24 +50,21 @@ module.exports.start = (db, port) => {
     })
     
     app.post("/user", (req, res) => {
-        let user = new User({
+        User.findOneAndUpdate({
             deviceId: req.body.deviceId
-        })
-        user.save(err => {
+        }, 
+        {
+            deviceId: req.body.deviceId
+        },
+        { upsert: true, new: true },
+        (err, user) => {
             if(err){
                 console.log(err)
                 res.sendStatus(501)
+            
             } else {
-                User.findOne({deviceId: req.body.deviceId},
-                    (err, user) => {
-                    if(err){
-                        console.log(err)
-                        res.sendStatus(501)
-                    } else {
-                        res.json(user)
-                        res.status(200)
-                    }
-                }) 
+                res.json(user)
+                res.status(200)
             }
         })
     })

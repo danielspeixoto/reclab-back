@@ -9,10 +9,7 @@ const User = require('./data/User.js')
 
 module.exports.start = (config, port, done) => {
     
-    mongoose.connect(config.path,  {
-        username: config.user,
-        password: config.secret
-    }).then(connection => {
+    mongoose.connect(config.path).then(connection => {
         console.log("Connected to database")
         if(done != null) {
             done()

@@ -7,6 +7,11 @@
     "start": "node src/main/index.js",
     "test": "mocha src/test/**"
   },
+  "dependencies": {
+    "express": "*",
+    "body-parser": "*",
+    "mongoose": "*"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/danielspeixoto/reclab-back.git"

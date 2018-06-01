@@ -7,9 +7,12 @@ const scheduling = require('./domain/scheduling.js')
 const Rating = require('./data/Rating.js')
 const User = require('./data/User.js')
 
-module.exports.start = (db, port, done) => {
+module.exports.start = (config, port, done) => {
     
-    mongoose.connect(db.path).then(connection => {
+    mongoose.connect(config.path,  {
+        username: config.user,
+        password: config.secret
+    }).then(connection => {
         console.log("Connected to database")
         if(done != null) {
             done()
@@ -36,9 +39,32 @@ module.exports.start = (db, port, done) => {
     
         }) 
     })
+
+    // ADMIN TOOL
+    app.post("/schedule", (req, res) => {
+        if(config.adminPass && req.pass == config.adminPass) {
+            let schedule = new Schedule(req.body)
+            schedule.save(err => {
+                if(err){
+                    console.log(err)
+                    res.sendStatus(500)
+                } else {
+                    res.sendStatus(200)
+                }
+            })
+        } else {
+            res.sendStatus(401)
+        }
+        
+    })
     
     app.post("/rating", (req, res) => {
-        let rating = new Rating(req.body)
+        let result = {
+            ...req.body,
+            ...req.body.ratings
+        }
+        console.log(result)
+        let rating = new Rating(result)
         rating.save(err => {
             if(err){
                 console.log(err)
@@ -50,6 +76,7 @@ module.exports.start = (db, port, done) => {
     })
     
     app.post("/user", (req, res) => {
+        console.log(req.body)
         User.findOneAndUpdate({
             deviceId: req.body.deviceId
         }, 
@@ -67,6 +94,10 @@ module.exports.start = (db, port, done) => {
                 res.status(200)
             }
         })
+    })
+
+    app.get("/", (req, res) => {
+        res.send("Hello world")
     })
     
     // Start Server

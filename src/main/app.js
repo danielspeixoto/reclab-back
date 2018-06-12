@@ -25,6 +25,7 @@ module.exports.start = (config, port, done) => {
     
     // Routes
     app.get("/scheduling", (req, res) => {
+        console.log(req.body)
         scheduling.getSchedules(req.body.userId, (err, schedules) => {
             if(err) {
                 console.log('Error at scheduling')
@@ -39,6 +40,7 @@ module.exports.start = (config, port, done) => {
 
     // ADMIN TOOL
     app.post("/schedule", (req, res) => {
+        console.log(req.body)
         if(config.adminPass && req.pass == config.adminPass) {
             let schedule = new Schedule(req.body)
             schedule.save(err => {

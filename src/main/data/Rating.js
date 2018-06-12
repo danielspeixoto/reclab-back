@@ -6,11 +6,10 @@ const schema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    // scheduleId: {
-    //     type: String,
-    //     ref: 'Schedule',
-    //     required: true
-    // },
+    schedule: {
+        type: Number,
+        required: true
+    },
     noiseRating: {
         type: Number,
         default: null

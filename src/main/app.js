@@ -60,7 +60,8 @@ module.exports.start = (config, port, done) => {
     app.post("/rating", (req, res) => {
         let result = {
             ...req.body,
-            ...req.body.ratings
+            ...req.body.ratings,
+            schedule: req.body.schedule + 7
         }
         console.log(result)
         let rating = new Rating(result)

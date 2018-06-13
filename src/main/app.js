@@ -74,6 +74,17 @@ module.exports.start = (config, port, done) => {
         })
     })
     
+    app.get("/rating", (req, res) => {
+        Rating.find({}, (err, ratings) => {
+            if(err) {
+                console.log(err)
+                res.sendStatus(500)
+            } else {
+                res.send(ratings)
+            }
+        })
+    })
+
     app.post("/user", (req, res) => {
         console.log(req.body)
         User.findOneAndUpdate({

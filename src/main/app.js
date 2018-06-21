@@ -25,7 +25,7 @@ module.exports.start = (config, port, done) => {
     
     // Routes
     app.get("/scheduling/:day", (req, res) => {
-        console.log("/scheduling")
+        console.log("/scheduling/" + req.params.day)
         console.log(req.body)
         scheduling.getSchedules(req.params.day, (err, schedules) => {
             if(err) {

@@ -12,6 +12,8 @@ module.exports.getSchedules = function(day, callback) {
             callback(err ,null)  
         } else {
             ratings = aggregation.groupByDay(aggregation.average(ratings))
+            console.log("ratings")
+            console.log(ratings)
             schedules = Recommendation.recommend(
                 ratings,
                 day

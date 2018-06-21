@@ -2,8 +2,8 @@ const assert = require ('chai').assert
 
 const recommendation = require('../main/domain/recommendation')
 
-describe('recommendation methods', () => {
-    it("Average", () => {
+describe('Recommendation methods', () => {
+    it("Sum", () => {
         const ratings = [
             [
                 { time: 11, day: 0, crowd: 2, light: 4, temperature: 2, noise: 1 },
@@ -17,7 +17,7 @@ describe('recommendation methods', () => {
             ]
         ] 
 
-        console.log(recommendation.recommend(ratings, 0))
-        // assert(JSON.stringify(expected) == JSON.stringify(aggregation.recommend(ratings)))
+        
+        assert(JSON.stringify(expected) == JSON.stringify(aggregation.recommend(ratings, 0)))
     })
 })

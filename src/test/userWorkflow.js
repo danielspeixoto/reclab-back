@@ -7,7 +7,7 @@ const helpers = require('./helpers')
 
 const assert = require ('chai').assert
 
-const port = 9000
+const port = 9001
 
 describe('Get scheduling for a user', () => {
     before((done) => {
@@ -15,22 +15,10 @@ describe('Get scheduling for a user', () => {
             path: 'mongodb://localhost:27017/reclab'
         }, port, () => {
             helpers.dropDB(() => {
-                // TODO Increase amount of mocks created
-                const schedule = new Schedule({
-                    hourStart: 8,
-                    day: 0,
-                    hourEnd: 9,
-                    overallRating: 3
-                })
-                    
-                schedule.save(err => {
-                    if(err) {
-                        done(err)
-                    }
-                })
+                // Actions to be done when DB is dropped
                 done()
             })
-            })
+        })
     }) 
     var userId = null
     it('User can login', done => {
@@ -50,43 +38,67 @@ describe('Get scheduling for a user', () => {
     })
 
     let scheduleId = null
-    it('Get /scheduling should return a scheduling for a user', done => {
-        if(userId == null) {
-            this.skip()
-        }
-        axios.get('http://127.0.0.1:' + port + "/scheduling", {
-            userId: userId
-
-        }).then(resp => {
-            // TODO Do asserts about list of schedules
-            console.log(resp.data)
-            scheduleId = resp.data[0]._id
-            done()
-
-        }).catch(err => {
-            console.log(err)
-            done(err)
+    if(userId == null) {
+        it('User can vote for a specific schedule', done => {
+            axios.post('http://127.0.0.1:' + port + "/rating", {
+                userId,
+                day: 0,
+                schedule: 8,
+                noiseRating: 5,
+                temperatureRating: 5
+            })
+            .then(resp => {
+                assert(resp.status == 200)
+                done()
+            })
+            .catch(err => {
+                console.log(err.body)
+                done(err)
+            })
         })
-    })
+
+        it('Partners can retrieve ratings', done => {
+            axios.get('http://127.0.0.1:' + port + "/rating", {})
+            .then(resp => {
+                assert(resp.data[0].noiseRating == 5)
+                done()
+            })
+            .catch(err => {
+                console.log(err.body)
+                done(err)
+            })
+        })
+        
+        it('Get /scheduling should return a scheduling for a user', done => {  
+            axios.get('http://127.0.0.1:' + port + "/scheduling/0", {
+                day: '0'
+            }).then(resp => {
+                var expected = [ { day: 0, time: 15, rating: 16 },
+                    { day: 0, time: 7, rating: 0 },
+                    { day: 0, time: 8, rating: 0 },
+                    { day: 0, time: 9, rating: 0 },
+                    { day: 0, time: 10, rating: 0 },
+                    { day: 0, time: 11, rating: 0 },
+                    { day: 0, time: 12, rating: 0 },
+                    { day: 0, time: 13, rating: 0 },
+                    { day: 0, time: 14, rating: 0 },
+                    { day: 0, time: 16, rating: 0 },
+                    { day: 0, time: 17, rating: 0 },
+                    { day: 0, time: 18, rating: 0 },
+                    { day: 0, time: 19, rating: 0 },
+                    { day: 0, time: 20, rating: 0 },
+                    { day: 0, time: 21, rating: 0 },
+                    { day: 0, time: 22, rating: 0 } ]
+                assert(JSON.stringify(expected) == JSON.stringify(resp.data))
+                done()
+
+            }).catch(err => {
+                console.log(err.body)
+                done(err)
+            })
+        })
+    }
     
-    it('User can vote for a specific schedule', done => {
-        if(scheduleId == null) {
-            this.skip()
-        }
-        axios.post('http://127.0.0.1:' + port + "/rating", {
-            userId,
-            scheduleId,
-            day: 0,
-            noiseRating: 5,
-            temperatureRating: 5
-        })
-        .then(resp => {
-            assert(resp.status == 200)
-            done()
-        })
-        .catch(err => {
-            console.log(err)
-            done(err)
-        })
-    })
+    
+        
 })    

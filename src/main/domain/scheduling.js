@@ -2,27 +2,21 @@ const Schedule = require('../data/Schedule.js')
 const User = require('../data/User.js')
 const Rating = require('../data/Rating.js')
 const Recommendation = require('./recommendation.js')
+const aggregation = require('./aggregation.js')
 
-module.exports.getSchedules = function(userId, callback) {
-    Schedule.find({}, (err ,schedules) => {
+module.exports.getSchedules = function(day, callback) {
+    // FFILTER BBY DAY
+    Rating.find({}, (err, ratings) => {
         if(err) {
-            console.log("[Error]:domain/scheduling:Find Schedules")
+            console.log("[Error]:domain/scheduling:Find Ratings")
             callback(err ,null)  
         } else {
-            Rating.find({
-                userId
-            }, (err ,ratings) => {
-                if(err) {
-                    console.log("[Error]:domain/scheduling:Find Ratings by user")
-                    callback(err ,schedules)
-                } else {
-                    schedules = Recommendation.recommend(
-                        ratings,
-                        schedules
-                    )
-                    callback(null, schedules)
-                }
-            })
+            ratings = aggregation.groupByDay(aggregation.average(ratings))
+            schedules = Recommendation.recommend(
+                ratings,
+                day
+            )
+            callback(null, schedules) 
         }
     })
 }

@@ -24,9 +24,10 @@ module.exports.start = (config, port, done) => {
     app.use(bodyParser.json())
     
     // Routes
-    app.get("/scheduling", (req, res) => {
+    app.get("/scheduling/:day", (req, res) => {
+        console.log("/scheduling")
         console.log(req.body)
-        scheduling.getSchedules(req.body.userId, (err, schedules) => {
+        scheduling.getSchedules(req.params.day, (err, schedules) => {
             if(err) {
                 console.log('Error at scheduling')
                 console.log(err)

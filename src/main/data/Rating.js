@@ -14,6 +14,10 @@ const schema = new mongoose.Schema({
         type: Number,
         default: null
     },
+    day: {
+        type: Number,
+        required: true
+    },
     temperatureRating: {
         type: Number,
         defalt: null

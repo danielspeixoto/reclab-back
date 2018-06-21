@@ -2,24 +2,23 @@ var num_days = 5
 var num_times = 16
 var initial_time = 7
 
-
 module.exports.recommend = (ratings, day) => {
     ratings = ratings[0]
-    schedules = schedules[day]
+    daySchedules = schedules[day].slice()
     // Assign user rating
     for(let i = 0; i < ratings.length; i++) {
-        schedules[ratings[i].time - initial_time].rating =
+        daySchedules[ratings[i].time - initial_time].rating =
          unify_rating(ratings[i])
     }
 
     // Sorts
-    schedules.sort((a, b) => {
+    daySchedules.sort((a, b) => {
         if(b.rating == a.rating) {
             return a.time - b.time
         }
         return b.rating - a.rating
     })
-    return schedules
+    return daySchedules
 }
 
 function get_arr_position(day, time) {

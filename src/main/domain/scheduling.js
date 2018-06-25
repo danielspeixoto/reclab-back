@@ -2,7 +2,7 @@ const Schedule = require('../data/Schedule.js')
 const User = require('../data/User.js')
 const Rating = require('../data/Rating.js')
 const Recommendation = require('./recommendation.js')
-const aggregation = require('./aggregation.js')
+const aggregation = require('./aggregation/average')
 
 module.exports.getSchedules = function(day, callback) {
     // FFILTER BBY DAY

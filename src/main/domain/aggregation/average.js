@@ -1,4 +1,4 @@
-module.exports.average = (ratings) => {
+module.exports.calculate = (ratings) => {
     var results = []
     for(let i = 0; i < ratings.length;) {
         let time = ratings[i].schedule
@@ -57,6 +57,8 @@ module.exports.average = (ratings) => {
     }
     return results
 }
+
+
 
 module.exports.groupByDay= (ratings) => {
     var grouped = []

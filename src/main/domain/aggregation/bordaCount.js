@@ -58,7 +58,9 @@ module.exports.calculate = (ratings) => {
     return times
 }
 
-
+module.exports.calculateWithSensorData = (ratings, sensorData) => {
+    return calculate(ratings)
+}
 
 module.exports.groupByUser= (ratings) => {
     var grouped = []

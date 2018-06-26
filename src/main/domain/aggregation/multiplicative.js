@@ -53,8 +53,16 @@ module.exports.calculate = (ratings) => {
             temperature : Number(Math.pow(temperature, 1/temperatureCounting).toPrecision(2)),
             noise : Number(Math.pow(noise, 1/noiseCounting).toPrecision(2)),
         }
-        results.push(result)   
+        results.push(unify_rating(result))   
     }
     return results
 }
 
+module.exports.calculateWithSensorData = (ratings, sensorData) => {
+    return calculate(ratings)
+}
+
+function unify_rating(rating) {
+    rating.rating = rating.noise + rating.crowd + rating.temperature + rating.light
+    return rating
+}

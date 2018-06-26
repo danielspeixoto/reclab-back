@@ -7,8 +7,7 @@ module.exports.recommend = (ratings, day) => {
     daySchedules = schedules[day].slice()
     // Assign user rating
     for(let i = 0; i < ratings.length; i++) {
-        daySchedules[ratings[i].time - initial_time].rating =
-         unify_rating(ratings[i])
+        daySchedules[ratings[i].time - initial_time].rating = ratings[i].rating
     }
 
     // Sorts
@@ -19,15 +18,6 @@ module.exports.recommend = (ratings, day) => {
         return b.rating - a.rating
     })
     return daySchedules
-}
-
-function get_arr_position(day, time) {
-    return day * num_times + time - initial_time
-}
-
-function unify_rating(rating) {
-    var total = rating.noise + rating.crowd + rating.temperature + rating.light
-    return total
 }
 
 var schedules = [ 

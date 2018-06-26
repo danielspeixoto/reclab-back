@@ -21,18 +21,15 @@ describe('Aggregation methods', () => {
             {noiseRating:null,crowdRating:4,_id:"5b207112fc3fda0014f49934",schedule:7,day: 2, userId:"5b2070150f5fad6490fbb732",__v:0}
         ]
 
-        const expected = [ [ { time: 11, day: 0, crowd: 2, light: 4, temperature: 2, noise: 1 },
-            { time: 19, day: 0, crowd: 5, light: 5, temperature: 5, noise: 5 },
-            { time: 12, day: 0, crowd: 1, light: 3, temperature: 1, noise: 1 },
-            { time: 7, day: 0, crowd: 2, light: 3, temperature: 3, noise: 3 } ],
-          [],
-          [ { time: 7, day: 2, crowd: 2.4, light: 3, temperature: 3, noise: 3 } ],
-          [],
-          [] ]
+        const expected = [ 
+            { time: 11, day: 0, crowd: 2, light: 4, temperature: 2, noise: 1, rating: 9 },
+            { time: 19, day: 0, crowd: 5, light: 5, temperature: 5, noise: 5, rating: 20 },
+            { time: 12, day: 0, crowd: 1, light: 3, temperature: 1, noise: 1, rating: 6 },
+            { time: 7, day: 0, crowd: 2, light: 3, temperature: 3, noise: 3, rating: 11 },
+            { time: 7, day: 2, crowd: 2.4, light: 3, temperature: 3, noise: 3, rating: 11.4 } 
+        ]
 
-        // console.log(aggregation.groupByDay(aggregation.average(ratings)))
-
-        assert(JSON.stringify(expected) == JSON.stringify(average.groupByDay(average.calculate(ratings))))
+        assert(JSON.stringify(expected) == JSON.stringify(average.calculate(ratings)))
     })
 
     it("Multiplicative", () => {
@@ -52,11 +49,11 @@ describe('Aggregation methods', () => {
             {noiseRating:null,crowdRating:4,_id:"5b207112fc3fda0014f49934",schedule:7,day: 2, userId:"5b2070150f5fad6490fbb732",__v:0}
         ]
 
-        const expected = [ { time: 11, day: 0, crowd: 2, light: 4, temperature: 2, noise: 1 },
-            { time: 19, day: 0, crowd: 5, light: 5, temperature: 5, noise: 5 },
-            { time: 12, day: 0, crowd: 1, light: 3, temperature: 1, noise: 1 },
-            { time: 7, day: 0, crowd: 2, light: 3, temperature: 3, noise: 3 },
-            { time: 7, day: 2, crowd: 2.3, light: 3, temperature: 3, noise: 3 } ]
+        const expected = [ { time: 11,day: 0,crowd: 2,light: 4,temperature: 2,noise: 1,rating: 9 },
+            { time: 19,day: 0,crowd: 5,light: 5,temperature: 5,noise: 5,rating: 20 },
+            { time: 12,day: 0,crowd: 1,light: 3,temperature: 1,noise: 1,rating: 6 },
+            { time: 7,day: 0,crowd: 2,light: 3,temperature: 3,noise: 3,rating: 11 },
+            { time: 7,day: 2,crowd: 2.3,light: 3,temperature: 3,noise: 3,rating: 11.3 } ]
 
         assert(JSON.stringify(expected) == JSON.stringify(multiplicative.calculate(ratings)))
     })

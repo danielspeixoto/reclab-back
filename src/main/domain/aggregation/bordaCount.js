@@ -23,7 +23,8 @@ module.exports.orderIndividualRanks = (ratings) => {
             return get_rating(b) - get_rating(a) 
         })
         for(let j = 0; j < userRating.length; j++) {
-            userRating[j].rating = j
+            // If user has more than 10 ratings it will not superevaluate his favorites
+            userRating[j].rating = Math.min(j, 10) 
             result.push(userRating[j])
         }
     }
@@ -59,7 +60,7 @@ module.exports.calculate = (ratings) => {
 }
 
 module.exports.calculateWithSensorData = (ratings, sensorData) => {
-    return calculate(ratings)
+    return calculate(ratings.concat(sensorData))
 }
 
 module.exports.groupByUser= (ratings) => {

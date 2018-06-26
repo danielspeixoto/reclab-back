@@ -11,6 +11,28 @@ module.exports.groupByDay= (ratings) => {
     return grouped
 }
 
+module.exports.groupByTime = (ratings) => {
+    var grouped = []
+    for(let i = 0; i < 22; i++) {
+        let day = []
+        grouped.push(day)
+    }
+    for(let i = 0; i < ratings.length; i++) {
+        grouped[ratings[i].schedule - 7].push(ratings[i])
+    }
+
+    return grouped
+}
+
+module.exports.groupByDayAndTime = (ratings) => {
+    var grouped = []
+    ratings = this.groupByDay(ratings)
+    for(let i = 0; i < 5; i++) { 
+        grouped.push(this.groupByTime(ratings[i]))
+    }
+    return grouped
+}
+
 module.exports.groupByUser= (ratings) => {
     var grouped = []
     ratings.sort((a, b) => {

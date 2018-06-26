@@ -59,6 +59,13 @@ module.exports.calculate = (ratings) => {
 }
 
 module.exports.calculateWithSensorData = (ratings, sensorData) => {
+    var advantage = 20
+    var sensorHeavy = []
+    for(let i = 0; i < sensorData.length; i++) {
+        for( let j = 0; j < advantage; j++) {       
+            ratings.push(sensorData[i])
+        }
+    }
     return calculate(ratings)
 }
 

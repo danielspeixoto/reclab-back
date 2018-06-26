@@ -3,7 +3,7 @@ const User = require('../data/User.js')
 const Rating = require('../data/Rating.js')
 const Recommendation = require('./recommendation.js')
 const aggregation = require('./aggregation/average')
-const grouping = require('./grouping/grouping')
+
 
 module.exports.getSchedules = function(day, callback) {
     // FILTER BY DAY
@@ -12,8 +12,8 @@ module.exports.getSchedules = function(day, callback) {
             console.log("[Error]:domain/scheduling:Find Ratings")
             callback(err ,null)  
         } else {
-            ratings = grouping.groupByDay(aggregation.calculate(ratings))
-            schedules = Recommendation.recommend(
+            ratings = aggregation.calculate(ratings)
+            schedules = Recommendation.attribution(
                 ratings,
                 day
             )

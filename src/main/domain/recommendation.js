@@ -1,9 +1,11 @@
+const grouping = require('./grouping/grouping')
+
 var num_days = 5
 var num_times = 16
 var initial_time = 7
 
-module.exports.recommend = (ratings, day) => {
-    ratings = ratings[day]
+module.exports.attribution = (ratings, day) => {
+    ratings = grouping.groupByDay(ratings)[day]
     daySchedules = schedules[day].slice()
     // Assign user rating
     for(let i = 0; i < ratings.length; i++) {

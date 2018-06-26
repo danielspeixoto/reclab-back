@@ -59,7 +59,7 @@ module.exports.calculate = (ratings) => {
 }
 
 module.exports.calculateWithSensorData = (ratings, sensorData) => {
-    return calculate(ratings)
+    return calculate(ratings.concat(sensorData))
 }
 
 function unify_rating(rating) {

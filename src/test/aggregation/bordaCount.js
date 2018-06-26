@@ -1,6 +1,6 @@
 const assert = require ('chai').assert
 
-const bordaCount = require('../main/domain/aggregation/bordaCount')
+const bordaCount = require('../../main/domain/aggregation/bordaCount')
 
 describe('Borda Count', () => {
     it("Group user ratings", () => {

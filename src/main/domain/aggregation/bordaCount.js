@@ -60,7 +60,7 @@ module.exports.calculate = (ratings) => {
 }
 
 module.exports.calculateWithSensorData = (ratings, sensorData) => {
-    return calculate(ratings.concat(sensorData))
+    return this.calculate(ratings.concat(sensorData))
 }
 
 module.exports.groupByUser= (ratings) => {

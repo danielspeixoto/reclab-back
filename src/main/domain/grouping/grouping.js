@@ -18,7 +18,7 @@ module.exports.groupByTime = (ratings) => {
         grouped.push(day)
     }
     for(let i = 0; i < ratings.length; i++) {
-        grouped[ratings[i].schedule - 7].push(ratings[i])
+        grouped[ratings[i].time - 7].push(ratings[i])
     }
 
     return grouped

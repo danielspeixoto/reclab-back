@@ -3,31 +3,25 @@ var grouping = require('../grouping/grouping')
 
 module.exports.calculate = (ratings, miseries) => {
     for(let i = 0; i < ratings.length; i++) {
-            if(miseries[ratings[i].day][ratings[i].time].length > 0 && 
-                ratings[i].crowdRating < miseries[ratings[i].day][ratings[i].time][0].crowdRating) {
-
+        if(miseries[ratings[i].day][ratings[i].schedule - 7].length > 0) {
+            if(ratings[i].crowdRating < miseries[ratings[i].day][ratings[i].schedule - 7][0].crowd / 2) {
                 ratings[i].crowdRating = null
             }
-            if(miseries[ratings[i].day][ratings[i].time].length > 0 && 
-                ratings[i].noiseRating < miseries[ratings[i].day][ratings[i].time][0].noiseRating) {
-
+            if(ratings[i].noiseRating < miseries[ratings[i].day][ratings[i].schedule - 7][0].noise / 2) {
                 ratings[i].noiseRating = null
             }
-            if(miseries[ratings[i].day][ratings[i].time].length > 0 && 
-                ratings[i].temperatureRating < miseries[ratings[i].day][ratings[i].time][0].temperatureRating) {
-
+            if(ratings[i].temperatureRating < miseries[ratings[i].day][ratings[i].schedule - 7][0].temperature / 2) {
                 ratings[i].temperatureRating = null
             }
-            if(miseries[ratings[i].day][ratings[i].time].length > 0 && 
-                ratings[i].lightRating < miseries[ratings[i].day][ratings[i].time][0].lightRating) {
-
+            if(ratings[i].lightRating < miseries[ratings[i].day][ratings[i].schedule - 7][0].light / 2) {
                 ratings[i].lightRating = null
             }
+        }
     }
     return average.calculate(ratings)
 }
 
 module.exports.calculateWithSensorData = (ratings, sensorData) => {
     var sensorAverage = grouping.groupByDayAndTime(average.calculate(sensorData))
-    return calculate(ratings, sensorAverage)
+    return this.calculate(ratings.concat(sensorData), sensorAverage)
 }

@@ -66,7 +66,7 @@ module.exports.calculateWithSensorData = (ratings, sensorData) => {
             ratings.push(sensorData[i])
         }
     }
-    return calculate(ratings)
+    return this.calculate(ratings)
 }
 
 module.exports.groupByDay= (ratings) => {

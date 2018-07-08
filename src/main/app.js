@@ -94,6 +94,10 @@ module.exports.start = (config, port, done) => {
         Endpoints List: <br>
         GET /scheduling/:day -> Recomendacao para um dado dia <br>
         GET /rating -> Visualiza as avaliacoes <br>
+        POST /user -> Envia um identificador do usuario e recebe o userId. Formato abaixo: <br>
+        { <br>
+        ----deviceId: (string) <br>
+        } <br>
         POST /rating -> Publica uma avaliacao. Formato abaixo:<br>
         { <br>
         ----userId: (string), <br>

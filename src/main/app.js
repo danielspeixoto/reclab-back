@@ -38,25 +38,6 @@ module.exports.start = (config, port, done) => {
     
         }) 
     })
-
-    // ADMIN TOOL
-    app.post("/schedule", (req, res) => {
-        console.log(req.body)
-        if(config.adminPass && req.pass == config.adminPass) {
-            let schedule = new Schedule(req.body)
-            schedule.save(err => {
-                if(err){
-                    console.log(err)
-                    res.sendStatus(500)
-                } else {
-                    res.sendStatus(200)
-                }
-            })
-        } else {
-            res.sendStatus(401)
-        }
-        
-    })
     
     app.post("/rating", (req, res) => {
         let result = {
@@ -109,7 +90,21 @@ module.exports.start = (config, port, done) => {
     })
 
     app.get("/", (req, res) => {
-        res.send("Hello world")
+        res.send(`
+        Endpoints List: <br>
+        GET /scheduling/:day -> Recomendacao para um dado dia <br>
+        GET /rating -> Visualiza as avaliacoes <br>
+        POST /rating -> Publica uma avaliacao. Formato abaixo:<br>
+        { <br>
+        ----userId: (string), <br>
+        ----crowdRating: (int de 1 ate 5), <br>
+        ----lightRating: (int de 1 ate 5), <br>
+        ----temperatureRating: (int de 1 ate 5), <br>
+        ----noiseRating: (int de 1 ate 5), <br>
+        ----schedule: (int de 7 ate 22), Referente ao horario <br>
+        ----day: (int de 0 ate 4) Sendo segunda 0 <br>
+        } <br>
+        `)
     })
     
     // Start Server

@@ -21,13 +21,11 @@ describe('Average', () => {
             {noiseRating:null,crowdRating:4,_id:"5b207112fc3fda0014f49934",schedule:7,day: 2, userId:"5b2070150f5fad6490fbb732",__v:0}
         ]
 
-        const expected = [ 
-            { time: 11, day: 0, crowd: 2, light: 4, temperature: 2, noise: 1, rating: 9 },
-            { time: 19, day: 0, crowd: 5, light: 5, temperature: 5, noise: 5, rating: 20 },
-            { time: 12, day: 0, crowd: 1, light: 3, temperature: 1, noise: 1, rating: 6 },
-            { time: 7, day: 0, crowd: 2, light: 3, temperature: 3, noise: 3, rating: 11 },
-            { time: 7, day: 2, crowd: 2.4, light: 3, temperature: 3, noise: 3, rating: 11.4 } 
-        ]
+        const expected = [ { time: 11, day: 0, crowd: 2, light: 4, temperature: 2, noise: 1, rating: 2.25 },
+          { time: 19, day: 0, crowd: 5, light: 5, temperature: 5, noise: 5, rating: 5 },
+          { time: 12, day: 0, crowd: 1, light: 3, temperature: 1, noise: 1, rating: 1.5 },
+          { time: 7, day: 0, crowd: 2, light: 3, temperature: 3, noise: 3, rating: 2.75 },
+          { time: 7, day: 2, crowd: 2.4, light: 3, temperature: 3, noise: 3, rating: 2.85 } ]
 
         assert(JSON.stringify(expected) == JSON.stringify(average.calculate(ratings)))
     })
@@ -37,15 +35,34 @@ describe('Average', () => {
         ratings = [
             {noiseRating:null,crowdRating:2,_id:"5b207071fc3fda0014f4992e",schedule:7,day: 2, userId:"5b2070150f5fad6490fbb732",__v:0}
         ]
-
-        const expected = [
-            { time: 7, day: 2, crowd: 4.9, light: 3, temperature: 3, noise: 3, rating: 13.9 } 
-        ]
-
+ 
         var sensorData = [
             { noiseRating:null,crowdRating:5, schedule:7,day: 2, userId:"-1",__v:0}
         ]
 
+        const expected = [ { time: 7,
+            day: 2,
+            crowd: 4.9,
+            light: 3,
+            temperature: 3,
+            noise: 3,
+            rating: 3.475 } ]
+        
         assert(JSON.stringify(expected) == JSON.stringify(average.calculateWithSensorData(ratings, sensorData)))
+    })
+
+    it("Sensor Rating", () => {
+        ratings = [
+            {noiseRating:null,crowdRating:2,_id:"5b207071fc3fda0014f4992e",schedule:7,day: 2, userId:"5b2070150f5fad6490fbb732",__v:0}
+        ]
+
+        const expected = [ { time: 7, day: 2, rating: 3.875 } ]
+
+        var sensorData = [
+            { rating:5, time:7,day: 2, userId:"-1",__v:0 }
+        ]
+
+        assert(JSON.stringify(expected) == JSON.stringify(average.calculateWithSensorRating(ratings, sensorData)))
+    
     })
 })

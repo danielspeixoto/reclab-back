@@ -73,7 +73,7 @@ describe('Get scheduling for a user', () => {
             axios.get('http://127.0.0.1:' + port + "/scheduling/0", {
                 day: '0'
             }).then(resp => {
-                var expected = [ { day: 0, time: 15, rating: 16 },
+                var expected = [ { day: 0, time: 15, rating: 4 },
                     { day: 0, time: 7, rating: 0 },
                     { day: 0, time: 8, rating: 0 },
                     { day: 0, time: 9, rating: 0 },

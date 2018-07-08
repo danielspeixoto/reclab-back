@@ -25,3 +25,43 @@ module.exports.calculateWithSensorData = (ratings, sensorData) => {
     var sensorAverage = grouping.groupByDayAndTime(average.calculate(sensorData))
     return this.calculate(ratings.concat(sensorData), sensorAverage)
 }
+
+module.exports.calculateWithSensorRating = (ratings, sensorRating) => {
+    sensors = grouping.groupByDayAndTime(sensorRating)
+
+    for(let i = 0; i < ratings.length; i++) {
+        if(sensors[ratings[i].day][ratings[i].schedule - 7].length > 0) {
+            if(calcRating(ratings[i]) < sensors[ratings[i].day][ratings[i].schedule - 7][0].rating) {
+                // Removes element
+                ratings.splice(i,1)
+            }
+        }
+    }
+    //console.log(ratings)
+    return average.calculateWithSensorRating(ratings, sensorRating)
+}
+
+var calcRating = (rating) => {
+    var total = 0
+    if(rating.crowdRating != null) {
+        total += rating.crowdRating
+    } else {
+        total += 3
+    }
+    if(rating.lightRating != null) {
+        light += rating.lightRating
+    } else {
+        total += 3
+    }
+    if(rating.temperatureRating != null) {
+        temperature += rating.temperatureRating
+    } else {
+        total += 3
+    }
+    if(rating.noiseRating != null) {
+        noise += rating.noiseRating
+    } else {
+        total += 3
+    }
+    return total / 4
+}

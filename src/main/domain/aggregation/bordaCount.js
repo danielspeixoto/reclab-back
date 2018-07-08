@@ -31,7 +31,7 @@ module.exports.orderIndividualRanks = (ratings) => {
     return result
 }
 
-module.exports.calculate = (ratings) => {
+var preprocess = (ratings) => {
     var result = this.orderIndividualRanks(ratings)
     result.sort((a,b) => {
         if(a.day == b.day) {
@@ -40,14 +40,26 @@ module.exports.calculate = (ratings) => {
         return a.day - b.day
     })
 
+    result.forEach(element => {
+       element.time = element.schedule 
+    });
+    return result
+}
+
+module.exports.calculate = (ratings) => {
+    result = preprocess(ratings)
+    return bordaCount(result)
+}
+
+var bordaCount = (ratings) => {
     var times = []
 
-    for(let i = 0; i < result.length;) {
-        var day = result[i].day
-        var time = result[i].schedule
+    for(let i = 0; i < ratings.length;) {
+        var day = ratings[i].day
+        var time = ratings[i].time
         var amount = 0
-        while(i < result.length && day == result[i].day && time == result[i].schedule) {
-            amount += result[i].rating
+        while(i < ratings.length && day == ratings[i].day && time == ratings[i].time) {
+            amount += ratings[i].rating
             i++
         }
         times.push({
@@ -56,11 +68,16 @@ module.exports.calculate = (ratings) => {
         })
     }
 
-    return times
 }
 
 module.exports.calculateWithSensorData = (ratings, sensorData) => {
     return this.calculate(ratings.concat(sensorData))
+}
+
+//TODO Test
+module.exports.calculateWithSensorRating = (ratings, sensorRating) => {
+    ratings = this.preprocess(ratings)
+    return this.bordaCount(ratings.concat(sensorRating))
 }
 
 module.exports.groupByUser= (ratings) => {

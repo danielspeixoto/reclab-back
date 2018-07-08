@@ -53,10 +53,10 @@ describe('Average', () => {
 
     it("Sensor Rating", () => {
         ratings = [
-            {noiseRating:null,crowdRating:2,_id:"5b207071fc3fda0014f4992e",schedule:7,day: 2, userId:"5b2070150f5fad6490fbb732",__v:0}
+            {lightRating: 2, temperatureRating: 2, noiseRating:2,crowdRating:2,_id:"5b207071fc3fda0014f4992e",schedule:7,day: 2, userId:"5b2070150f5fad6490fbb732",__v:0}
         ]
 
-        const expected = [ { time: 7, day: 2, rating: 3.875 } ]
+        const expected = [ { time: 7, day: 2, rating: 3.5 } ]
 
         var sensorData = [
             { rating:5, time:7,day: 2, userId:"-1",__v:0 }

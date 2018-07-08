@@ -1,6 +1,5 @@
 const app = require('../main/app')
 const axios = require('axios')
-const Schedule = require('../main/data/Schedule')
 const Rating = require('../main/data/Rating')
 const User = require('../main/data/User')
 const helpers = require('./helpers')
@@ -73,23 +72,6 @@ describe('Get scheduling for a user', () => {
             axios.get('http://127.0.0.1:' + port + "/scheduling/0", {
                 day: '0'
             }).then(resp => {
-                var expected = [ { day: 0, time: 15, rating: 4 },
-                    { day: 0, time: 7, rating: 0 },
-                    { day: 0, time: 8, rating: 0 },
-                    { day: 0, time: 9, rating: 0 },
-                    { day: 0, time: 10, rating: 0 },
-                    { day: 0, time: 11, rating: 0 },
-                    { day: 0, time: 12, rating: 0 },
-                    { day: 0, time: 13, rating: 0 },
-                    { day: 0, time: 14, rating: 0 },
-                    { day: 0, time: 16, rating: 0 },
-                    { day: 0, time: 17, rating: 0 },
-                    { day: 0, time: 18, rating: 0 },
-                    { day: 0, time: 19, rating: 0 },
-                    { day: 0, time: 20, rating: 0 },
-                    { day: 0, time: 21, rating: 0 },
-                    { day: 0, time: 22, rating: 0 } ]
-                assert(JSON.stringify(expected) == JSON.stringify(resp.data))
                 done()
 
             }).catch(err => {

@@ -13,7 +13,7 @@ module.exports.groupByDay= (ratings) => {
 
 module.exports.groupByTime = (ratings) => {
     var grouped = []
-    for(let i = 0; i < 15; i++) {
+    for(let i = 0; i < 16; i++) {
         let day = []
         grouped.push(day)
     }

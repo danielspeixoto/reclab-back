@@ -62,7 +62,26 @@ module.exports.calculateWithSensorData = (ratings, sensorData) => {
     return this.calculate(ratings.concat(sensorData))
 }
 
+var groupRating = require('../grouping/ratings')
+var grouping = require('../grouping/grouping')
+
+//TODO Test
+module.exports.calculateWithSensorRating = (ratings, sensorRating) => {
+    ratings = this.calculate(ratings)
+    ratings = groupRating.multiplicative(grouping.groupByDayAndTime(ratings),
+        grouping.groupByDayAndTime(sensorRating))
+    result = []
+    for(let i = 0; i < ratings.length; i++) {
+        for(let j = 0; j < ratings[i].length; j++) {
+            for(let k = 0; k < ratings[i][j].length; k++) {
+                result.push(ratings[i][j][k])
+            }
+        }
+    }
+    return result
+}
+
 function unify_rating(rating) {
-    rating.rating = rating.noise + rating.crowd + rating.temperature + rating.light
+    rating.rating = (rating.noise + rating.crowd + rating.temperature + rating.light) / 4
     return rating
 }

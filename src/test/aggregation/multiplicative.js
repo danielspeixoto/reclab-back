@@ -29,4 +29,17 @@ describe('Multiplicative', () => {
 
         assert(JSON.stringify(expected) == JSON.stringify(multiplicative.calculate(ratings)))
     })
+
+    it('Sensor Rating', () => {
+        ratings = [
+            {lightRating: 1, temperatureRating: 1, noiseRating:1,crowdRating:1,_id:"5b207071fc3fda0014f4992e",schedule:7,day: 2, userId:"5b2070150f5fad6490fbb732",__v:0}
+          ]
+        
+          var sensorData = [
+              { rating:4, time:7,day: 2, userId:"-1",__v:0 }
+          ]
+          const expected = [ { time: 7, day: 2, rating: 2 } ]
+
+          assert(JSON.stringify(expected) == JSON.stringify(multiplicative.calculateWithSensorRating(ratings, sensorData)))
+    })
 })

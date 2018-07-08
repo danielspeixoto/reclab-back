@@ -1,16 +1,28 @@
 var get_rating = (rating) => {
     var total = 0
-    if(rating.noise) {
-        total += rating.noise
+    amount = 0
+    if(rating.noiseRating) {
+        amount++
+        total += rating.noiseRating
     }  
-    if(rating.crowd) {
-        total += rating.crowd
+    if(rating.crowdRating) {
+        amount++
+        total += rating.crowdRating
     }  
-    if(rating.temperature) {
-        total += rating.temperature
+    if(rating.temperatureRating) {
+        amount++
+        total += rating.temperatureRating
     }  
-    if(rating.light) {
-        total += rating.light
+    if(rating.lightRating) {
+        amount++
+        total += rating.lightRating
+    }
+    if(rating.rating) {
+        amount++
+        total += rating.rating
+    }
+    if(amount != 0) {
+        total /= amount
     }
    return total
 }
@@ -18,13 +30,15 @@ var get_rating = (rating) => {
 module.exports.orderIndividualRanks = (ratings) => {
     var result = []
     for(let i = 0; i < ratings.length; i++) {
-        userRating = ratings[i]
+        let userRating = ratings[i]
         userRating.sort((a, b) => {
-            return get_rating(b) - get_rating(a) 
+            return b.rating - a.rating 
         })
+        // Ensures that user ratings starts at 5
+        let aval = 10
         for(let j = 0; j < userRating.length; j++) {
             // If user has more than 10 ratings it will not superevaluate his favorites
-            userRating[j].rating = Math.min(j, 10) 
+            userRating[j].rating = Math.max(2, aval--)/2
             result.push(userRating[j])
         }
     }
@@ -32,27 +46,35 @@ module.exports.orderIndividualRanks = (ratings) => {
 }
 
 var preprocess = (ratings) => {
-    var result = this.orderIndividualRanks(ratings)
-    result.sort((a,b) => {
-        if(a.day == b.day) {
-            return a.schedule - b.schedule
-        }
-        return a.day - b.day
-    })
-
-    result.forEach(element => {
-       element.time = element.schedule 
+    ratings.forEach(element => {
+        element.forEach(item => {
+            if(item.schedule) {
+                item.time = item.schedule 
+            }
+            item.rating = get_rating(item)
+        })
     });
-    return result
+
+    return ratings
 }
 
+var grouping = require('../grouping/grouping')
+
 module.exports.calculate = (ratings) => {
-    result = preprocess(ratings)
+    result = preprocess(grouping.groupByUser(ratings))
+    result = this.orderIndividualRanks(result)
     return bordaCount(result)
 }
 
 var bordaCount = (ratings) => {
     var times = []
+
+    result.sort((a,b) => {
+        if(a.day == b.day) {
+            return a.time - b.time
+        }
+        return a.day - b.day
+    })
 
     for(let i = 0; i < ratings.length;) {
         var day = ratings[i].day
@@ -67,17 +89,17 @@ var bordaCount = (ratings) => {
             rating: amount
         })
     }
-
+    return times
 }
 
 module.exports.calculateWithSensorData = (ratings, sensorData) => {
     return this.calculate(ratings.concat(sensorData))
 }
 
-//TODO Test
 module.exports.calculateWithSensorRating = (ratings, sensorRating) => {
-    ratings = this.preprocess(ratings)
-    return this.bordaCount(ratings.concat(sensorRating))
+    
+    ratings = this.calculate(ratings.concat(sensorRating))
+    return ratings
 }
 
 module.exports.groupByUser= (ratings) => {

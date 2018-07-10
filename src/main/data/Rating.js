@@ -30,6 +30,9 @@ const schema = new mongoose.Schema({
         type: Number,
         defalt: null
     }
+},
+{
+  timestamps: true
 })
 
 const RatingModel = module.exports = mongoose.model('Rating', schema)

@@ -65,7 +65,6 @@ module.exports.calculateWithSensorData = (ratings, sensorData) => {
 var groupRating = require('../grouping/ratings')
 var grouping = require('../grouping/grouping')
 
-//TODO Test
 module.exports.calculateWithSensorRating = (ratings, sensorRating) => {
     ratings = this.calculate(ratings)
     ratings = groupRating.multiplicative(grouping.groupByDayAndTime(ratings),

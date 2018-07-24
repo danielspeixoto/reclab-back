@@ -49,17 +49,17 @@ var calcRating = (rating) => {
         total += 3
     }
     if(rating.lightRating != null) {
-        light += rating.lightRating
+        total += rating.lightRating
     } else {
         total += 3
     }
     if(rating.temperatureRating != null) {
-        temperature += rating.temperatureRating
+        total += rating.temperatureRating
     } else {
         total += 3
     }
     if(rating.noiseRating != null) {
-        noise += rating.noiseRating
+        total += rating.noiseRating
     } else {
         total += 3
     }
